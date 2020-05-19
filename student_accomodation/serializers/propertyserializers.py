@@ -22,8 +22,10 @@ class PropertySerializer(serializers.ModelSerializer):
 	facilities=serializers.CharField(max_length=2000,write_only=True)
 	closest_universities=serializers.CharField(max_length=2000,write_only=True)
 	currency_symbol=serializers.CharField(max_length=400,read_only=True)
-
 	facilities_data=serializers.SerializerMethodField()
+	# closest_universities
+	near_by_university=serializers.SerializerMethodField()
+
 
 
 	# country_name=serializers.CharField(max_length=250,read_only=True)
@@ -42,20 +44,15 @@ class PropertySerializer(serializers.ModelSerializer):
 			# dict1={}{}
 			dict1['amenity']=[{"id":x.facilities.id,"title":x.facilities.title} for x in obj.property_facility.filter(facilities_category__iexact='amenities')]
 			dict1['safetyAndSecurity']=[{"id":x.facilities.id,"title":x.facilities.title} for x in obj.property_facility.filter(facilities_category__iexact='safetyAndSecurity')]
-			dict1['rentInclusions']=[{"id":x.facilities.id,"title":x.facilities.title} for x in obj.property_facility.filter(facilities_category__iexact='rentInclusions')]
-			# list1=[]
-			# for x in obj.property_facility.all():
-			# 	if x.facilities_category not in dict1.keys():
-			# 		dict1[x.facilities_category]={"id":x.facilities.id,"title":x.facilities.title}
-			# # 	print(x.facilities.id)
-			# 	else:
-			# 		dict1[x.facilities_category].update({"id":x.facilities.id,"title":x.facilities.title})
-			# 	list1.append(dict1)
-			# 	dict1={}
-				
+			dict1['rentInclusions']=[{"id":x.facilities.id,"title":x.facilities.title} for x in obj.property_facility.filter(facilities_category__iexact='rentInclusions')]	
 			return dict1
 		except Exception as e:
-			print(e)
+			# print(e)
+			return None
+	def near_by_university(self,obj):
+		try:
+			return [{"university_name":x.university.name,"university_id":x.university.id} for x in obj.property_university.all()]
+		except:
 			return None
 	def create(self,validated_data):
 		university=eval(validated_data.pop('closest_universities'))
@@ -83,6 +80,7 @@ class PropertySerializer(serializers.ModelSerializer):
 		rent_inclusions=list(map(lambda x:str(x)+"-rentInclusions",facilities_data[0]['rentInclusions']))
 		property_object=Property.objects.filter(id=instance.id).update(**validated_data)
 		PropertyFacility.objects.filter(property_detail=instance.id).delete()
+		PropertyUniversity.objects.filter(property_detail=instance.id).delete()
 		amenities.extend(safety_security)
 		amenities.extend(rent_inclusions)
 		for facility_detail in create_property_facilty(amenities):

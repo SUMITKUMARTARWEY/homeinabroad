@@ -1,6 +1,7 @@
 from student_accomodation.views import user
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 # from datetime import datetime
 
 class UserSerializer(serializers.ModelSerializer):
@@ -16,14 +17,16 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
 
-# 	def create(self,validated_data):
-# 		# print(validated_data)
+	def create(self,validated_data):
+		validated_data['password']=make_password(validated_data['password'])
+		user_create=User.objects.create(**validated_data)
+		# print(validated_data)
 # 		password=validated_data.pop('password')
 # 		user=User.objects.create_user(username=validated_data['email'],email=validated_data['email'],password=password
 # ,first_name=validated_data['first_name'],last_name=validated_data['last_name'],is_active=1,date_joined=datetime.now())
 # 		validated_data['auth_user']=user
 # 		user_create=Users.objects.create(**validated_data)
-# 		return user_create
+		return user_create
 # 	def update(self,instance,validated_data):
 # 		# print(validated_data)
 # 		password= validated_data.pop('password') if 'password' in validated_data else None

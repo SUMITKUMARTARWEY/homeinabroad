@@ -232,7 +232,7 @@ class Property(models.Model):
 
 class PropertyUniversity(models.Model):
     id                      = models.AutoField(primary_key=True)
-    property_detail         = models.ForeignKey(Property,on_delete=models.CASCADE)
+    property_detail         = models.ForeignKey(Property,on_delete=models.CASCADE,related_name='property_university')
     university              = models.ForeignKey(University,on_delete=models.CASCADE)
     added_date              = models.DateTimeField(auto_now_add=True)
     updated_date            = models.DateTimeField(auto_now=True)

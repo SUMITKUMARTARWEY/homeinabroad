@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'corsheaders',
+    # 'student_accomodation',
+    'rest_framework.authtoken',
+    # 'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -50,9 +52,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    # 'corsheaders.middleware.CorsMiddleware',
 ]
-CORS_ORIGIN_ALLOW_ALL=True
+# CORS_ORIGIN_ALLOW_ALL=True
 ROOT_URLCONF = 'student_api.urls'
 
 TEMPLATES = [
@@ -89,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'student_accomodation',
         'USER':'root',
-        'PASSWORD':'',
+        'PASSWORD':'valindex',
         'PORT':'3306',
     }
 }
