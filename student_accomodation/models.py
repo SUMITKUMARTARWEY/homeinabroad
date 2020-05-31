@@ -138,53 +138,18 @@ class University(models.Model):
     class Meta:
         db_table='university'
 
-# class Offer(models.Model):
-#     id                   = models.AutoField(primary_key=True)
-#     title                = models.CharField(max_length=500)
-#     message              = models.TextField()
-#     validity_date        = models.DateTimeField()
-#     added_by             = models.ForeignKey(User,on_delete=models.CASCADE)
-#     added_date           = models.DateTimeField(auto_now_add=True)
+class Offer(models.Model):
+    id                   = models.AutoField(primary_key=True)
+    title                = models.CharField(max_length=500)
+    message              = models.TextField()
+    validity_date        = models.DateTimeField()
+    Offer_level          = models.IntegerField(default=0)
+    added_by             = models.ForeignKey(User,on_delete=models.CASCADE)
+    added_date           = models.DateTimeField(auto_now_add=True)
     
-#     class Meta:
-#         db_table='offer'
-
-# class RoomType(models.Model):
-#     title            =  models.CharField(max_length=500)
-#     type_area        =  models.TextField()
-#     type_description =  models.TextField()
-#     offers           =  models.TextField()
-#     images           =  models.TextField()
-#     bed_pricing      =  models.TextField()      
-#     added_date       =  models.DateTimeField(auto_now_add=True)
-#     updated_date     =  models.DateTimeField(auto_now=True)
-#     is_enabled       =  models.IntegerField(default=1)
-
-#     class Meta:
-#         db_table='room_type'
-
-
-
-
-
-
-# class RoomCategory(models.Model):
-#     category_name           =   models.CharField(max_length=400)
-#     category_description    =   models.TextField()
-#     category_banner_imageurl=   models.TextField()
-#     category_offer          =   models.TextField()
-#     added_by                =   models.ForeignKey(User,on_delete=models.CASCADE)
-#     updated_date            =   models.DateTimeField(auto_now=True)
-#     added_date              =   models.DateTimeField(auto_now_add=True)
-#     room_type               =   models.ForeignKey(RoomType,on_delete=models.ForeignKey)
-#     #added_date              =   models.DateTimeField(auto_now_add=True)
-#     #updated_date            =   models.DateTimeField(auto_now=True)
-#     is_enabled              =   models.IntegerField(default=1)
-#     class Meta:
-#         db_table='room_categories'
-
-
-
+    class Meta:
+        db_table='offer'
+ 
 class Property(models.Model):
     id                          = models.AutoField(primary_key=True)
     name                        = models.CharField(max_length=400)
@@ -214,21 +179,104 @@ class Property(models.Model):
     # numberofbeds            = models.TextField()
     #property_speciality         = models.TextField()
     #property_payment_rules      = models.TextField()
-    property_offers             = models.TextField()
+    offers                      = models.ForeignKey(Offer,on_delete=models.CASCADE)
     property_images             = models.TextField()  
     heading1                    = models.TextField()
     heading2                    = models.TextField()
     meta_title                  = models.TextField() 
     meta_keywords               = models.TextField()
     meta_description            = models.TextField()
-    room_categories             = models.TextField()
+    # room_categories             = models.TextField()
     added_by                    = models.ForeignKey(User,on_delete=models.CASCADE)
     added_date                  = models.DateTimeField(auto_now_add=True)
-    updated_date                = models.DateTimeField(auto_now=True)
+    updated_date                = models.DateTimeField(auto_now=True)             
 
 
     class Meta:
         db_table='property'
+
+
+
+
+
+class RoomCategory(models.Model):
+    id                      =   models.AutoField(primary_key=True)
+    property_detail         =   models.ForeignKey(Property,on_delete=models.CASCADE)
+    category_name           =   models.CharField(max_length=400)
+    category_description    =   models.TextField()
+    category_banner_imageurl=   models.TextField()
+    # category_offer          =   models.TextField()
+    added_by                =   models.ForeignKey(User,on_delete=models.CASCADE)
+    updated_date            =   models.DateTimeField(auto_now=True)
+    added_date              =   models.DateTimeField(auto_now_add=True)
+    # room_type               =   models.ForeignKey(RoomType,on_delete=models.ForeignKey)
+    #added_date              =   models.DateTimeField(auto_now_add=True)
+    #updated_date            =   models.DateTimeField(auto_now=True)
+    is_enabled              =   models.IntegerField(default=1)
+    class Meta:
+        db_table='room_categories'
+
+class RoomCategoryOffer(models.Model):
+    id                      = models.AutoField(primary_key=True)
+    roomcategory            = models.ForeignKey(RoomCategory,on_delete=models.CASCADE)
+    Offer                   = models.ForeignKey(Offer,on_delete=models.CASCADE)
+    added_by                = models.ForeignKey(User,on_delete=models.CASCADE)
+    added_date              = models.DateTimeField()
+    is_enabled              = models.IntegerField(default=1)
+
+    class Meta:
+        db_table='room_categories_offer'
+
+
+
+class RoomType(models.Model):
+    id               = models.AutoField(primary_key=True)
+    title            =  models.CharField(max_length=500)
+    type_area        =  models.TextField()
+    type_description =  models.TextField()
+    images           =  models.TextField()
+    added_date       =  models.DateTimeField(auto_now_add=True)
+    is_enabled       =  models.IntegerField(default=1)
+
+    class Meta:
+        db_table='room_type'
+
+
+
+
+class RoomTypeOffer(models.Model):
+    id                  = models.AutoField(primary_key=True)
+    roomtype            = models.ForeignKey(RoomType,on_delete=models.CASCADE)
+    Offer               = models.ForeignKey(Offer,on_delete=models.CASCADE)
+    added_by            = models.ForeignKey(User,on_delete=models.CASCADE)
+    added_date          = models.DateTimeField()
+    is_enabled          = models.IntegerField(default=1)
+
+    class Meta:
+        db_table='roomtype_offer'
+
+
+class BedPricing(models.Model):
+    id                    = models.AutoField(primary_key=True)
+    roomtype              = models.ForeignKey(RoomType,on_delete=models.CASCADE)
+    is_shortterm          = models.BooleanField(default=True)
+    hasnominatedbeds      = models.BooleanField(default=True)
+    numberofnominatedbeds = models.IntegerField(default=0)
+    bedavailabilitystatus = models.IntegerField(default=1)
+    rentbreakup_duration  = models.CharField(max_length=400)
+    tenancy_duration      = models.CharField(max_length=400)
+    tenancy_durationunit  = models.CharField(max_length=400)
+    room_checkin_date     = models.DateField()
+    room_checkout_date    = models.DateField()
+    bed_price             = models.IntegerField(default=0)
+    bed_discounted_price  = models.IntegerField()
+    deposit_charge        = models.IntegerField(default=0)
+    service_fee           = models.IntegerField(default=0)
+    taxes_inclusive       = models.IntegerField(default=0)
+
+    class Meta:
+        db_table='bed_price'
+
 
 class PropertyUniversity(models.Model):
     id                      = models.AutoField(primary_key=True)
@@ -255,104 +303,94 @@ class PropertyFacility(models.Model):
     class Meta:
         db_table='property_facility'
 
-    # "propertyImages": [], 
-    # "facilities": [
-    #     {
-    #         "propertyAmenities": [
-    #             {
-    #                 "iconUrl": 
-    #                 "",
-    #                 "iconName": ""
-    #             }
-    #         ]
-    #     },
-    #     {
-    #         "propertyRentInclusions": [
-    #             {
-    #                 "iconUrl": "",
-    #                 "iconName": ""
-    #             }
-    #         ]
-    #     },
-    #     {
-    #         "propertySafetySecurityInclusions": [
-    #             {
-    #                 "iconUrl": "",
-    #                 "iconName": ""
-    #             }
-    #         ]
-    #     }
-    # ],
-    # "universitiesNearby": [
-    #     {
-    #         "name": "",
-    #         "city": "",
-    #         "country": "",
+class ContactUs(models.Model):
+    id                     = models.AutoField(primary_key=True)
+    name                   = models.CharField(max_length=500)
+    email                  = models.EmailField()
+    contact_no             = models.CharField(max_length=500)
+    message                = models.TextField()
+    lead_source            = models.TextField()
+    # added_by               = models.ForeignKey(User,on_delete=models.CASCADE)
+    added_date             = models.DateTimeField(auto_now_add=True)
+    is_enabled             = models.IntegerField(default=1)                 
 
-    #         "slug": "",
-    #         "campuses": [
-    #             {
-    #                 "lat": 0,
-    #                 "lng": 0,
-    #                 "slug": "",
-    #                 "name": ""
-    #             }
-    #         ]
-    #     }
-    # ],
-    # "roomCategories": [
-    #     {
-    #         "categoryName": "",
-    #         "categoryDescription": "",
-    #         "categoryBannerImageUrl": [],
-    #         "categoryOffer": {
-    #             "offerTitle": "",
-    #             "offerDescription": "",
-    #             "offerValidityDate": ""
-    #         },
-    #         "roomTypes": [
-    #             {
-    #                 "typeTitle": "",
-    #                 "typeArea": "",
-    #                 "typeDescription": "",
-    #                 "typeOffer": [
-    #                     {
-    #                         "offerTitle": "",
-    #                         "offerDescription": "",
-    #                         "offerValidityDate": ""
-    #                     }
-    #                 ],
-    #                 "typeImages": [],
-    #                 "bedPricing": [
-    #                     {
-    #                         "isShortTerm" : false,
-    #                         "hasNominatedBeds" : false,
-    #                         "numberOfNominatedBeds" : 0,
-    #                         "bedAvailabilityStatus" : "",
-    #                         "rentBreakupDuration" : "",
-    #                         "tenancyDuration" : 0,
-    #                         "tenancyDurationUnit" : "",
-    #                         "roomCheckInDate" : "",
-    #                         "roomCheckOutDate" : "",
-    #                         "bedPrice" : 0,
-    #                         "bedDiscountedPrice" : 0,
-    #                         "depositCharge" : 0,
-    #                         "serviceFee" : 0,
-    #                         "taxesInclusive" : 0
-    #                     }
-    #                 ]
-    #             }
-    #         ]
-    #     }
-    # ],
-    # "meta": {
-      #  "metaH1": "",
-      # "metaH2": "",
-       # "metaTitle": "",
-        #"metaKeywords": "",
-        #"metaDescription": ""
-    # }
+    class Meta:
+        db_table='contact_us'
 
+
+class RequestService(models.Model):
+    id                     = models.AutoField(primary_key=True)
+    first_name             = models.CharField(max_length=500)
+    last_name              = models.CharField(max_length=500)
+    email                  = models.EmailField()
+    contact_number         = models.CharField(max_length=500) 
+    message                = models.TextField()
+    service_name           = models.TextField()
+    is_enabled             = models.IntegerField(default=1)
+    added_by               = models.ForeignKey(User,on_delete=models.CASCADE)
+    class Meta:
+        db_table='request_service'
+
+class Booking(models.Model):
+    id                     = models.AutoField(primary_key=True)
+    first_name             = models.CharField(max_length=500) 
+    last_name              = models.CharField(max_length=500)
+    gender                 = models.CharField(max_length=200)
+    email                  = models.EmailField()
+    contact_number         = models.CharField(max_length=200)
+    dob                    = models.DateField()
+    nationality            = models.CharField(max_length=200)
+    city                   = models.ForeignKey(City,on_delete=models.CASCADE)
+    postal_code            = models.CharField(max_length=200)
+    university             = models.ForeignKey(University,on_delete=models.CASCADE)
+    year_of_study          = models.IntegerField()
+    lead_source            = models.TextField()
+    property_name          = models.TextField()
+    property_detail        = models.ForeignKey(Property,on_delete=models.CASCADE)
+    room_type              = models.ForeignKey(RoomType,on_delete=models.CASCADE)
+    bed_price              = models.ForeignKey(BedPricing,on_delete=models.CASCADE)
+    check_in_date          = models.DateField()
+    checkout_date          = models.DateField()
+    added_date             = models.DateTimeField()
+    is_enabled             = models.IntegerField(default=1)
+
+    class Meta:
+        db_table='booking'
+
+class Enquiry(models.Model):
+    id                     = models.AutoField(primary_key=True)
+    first_name             = models.CharField(max_length=500)
+    last_name              = models.CharField(max_length=500)
+    email                  = models.EmailField()
+    contact_number         = models.CharField(max_length=200)
+    university             = models.ForeignKey(University,on_delete=models.CASCADE)
+    lead_source            = models.TextField()
+    message                = models.TextField()
+    property_detail        = models.ForeignKey(Property,on_delete=models.CASCADE)
+    room_category          = models.ForeignKey(RoomCategory,on_delete=models.CASCADE)
+    room_type              = models.ForeignKey(RoomType,on_delete=models.CASCADE)  
+    bed_price              = models.ForeignKey(BedPricing,on_delete=models.CASCADE)
+    check_in_date          = models.DateField()
+    checkout_date          = models.DateField()
+    is_enabled             = models.IntegerField(default=1)
+
+    class Meta:
+        db_table='enquiry'
+
+class LeadGeneration(models.Model):    
+    first_name              = models.CharField(max_length=400)
+    last_name               = models.CharField(max_length=400)
+    email                   = models.EmailField()
+    contact_number          = models.CharField(max_length=400)
+    university              = models.ForeignKey(University,on_delete=models.CASCADE)
+    lead_source             = models.CharField(max_length=400)
+    message                 = models.TextField()
+    budget                  = models.TextField(null=True,blank=True)
+    room_type               = models.ForeignKey(RoomType,on_delete=models.CASCADE)
+
+    class Meta:
+        db_table='lead_generation'
+   
 
 
 

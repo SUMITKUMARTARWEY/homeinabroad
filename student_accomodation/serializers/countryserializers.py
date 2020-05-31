@@ -1,5 +1,5 @@
 from student_accomodation.models import Country
-from student_accomodation.views import country
+# from student_accomodation.views import country
 from rest_framework import serializers
 from .stundent_manager import generate_slug
 class CountrySerializer(serializers.ModelSerializer):

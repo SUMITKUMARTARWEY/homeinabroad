@@ -1,5 +1,5 @@
 from student_accomodation.models import City
-from student_accomodation.views import city
+# from student_accomodation.views import city
 from rest_framework import serializers
 from .stundent_manager import generate_slug 
 class CitySerializer(serializers.ModelSerializer):

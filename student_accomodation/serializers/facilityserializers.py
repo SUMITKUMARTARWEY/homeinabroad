@@ -1,5 +1,5 @@
 from student_accomodation.models import Facility
-from student_accomodation.views import university
+# from student_accomodation.views import university
 from rest_framework import serializers
 from .stundent_manager import generate_slug
 class FacilitySerializer(serializers.ModelSerializer):
