@@ -14,4 +14,26 @@ class CitySerializer(serializers.ModelSerializer):
 		model = City
 
 	def get_country_slug(self,obj):
-		return generate_slug(obj.name)
+		try:
+			return (obj.country.country_slug)
+		except:
+			return None
+
+class CitySearchSerializer(CitySerializer):
+	category_name=serializers.CharField(default='City')
+	# country_slug=serializers.SerializerMethodField()
+	# country_name=serializers.CharField(max_length=400,read_only=True)
+	# # country_name=serializers.CharField(max_length=250,read_only=True)
+	# added_by_name=serializers.CharField(max_length=400,read_only=True)
+	class Meta:
+		# fields = ('id','scale','banker_name','branch_detail','email','current_mobile','old_mobile_no1','old_mobile_no2','notes','marketer','level2_profile','level3_profile','is_deleted','bank','bank_name','bank','marketer_name','status','visiting_card','added_date','banker_mobile','firm','firm_name',)
+		fields = ('name','country_name','city_slug','category_name','country_slug')
+		#exclude = ('status', )
+		model = City
+		
+	# def get_country_slug(self,obj):
+	# 	try:
+	# 		return (obj.country.country_slug)
+	# 	except:
+	# 		return None
+			

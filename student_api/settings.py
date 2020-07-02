@@ -26,7 +26,7 @@ SECRET_KEY = '-gs2x-gjr5ys1#__ads+t3jr2ku=$!-!fyn**wkxdr$1)mm5nf'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost","b46b3606.ngrok.io","127.0.0.1"]
+ALLOWED_HOSTS = ["7f1401b6f5f7.ngrok.io"]
 
 
 
@@ -81,7 +81,7 @@ INSTALLED_APPS = [
     'rest_framework',
     # 'student_accomodation',
     'rest_framework.authtoken',
-    # 'corsheaders',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -92,8 +92,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     # 'corsheaders.middleware.CorsMiddleware',
 ]
+CORS_ORIGIN_ALLOW_ALL = True 
 # CORS_ORIGIN_ALLOW_ALL=True
 ROOT_URLCONF = 'student_api.urls'
 
@@ -120,8 +123,8 @@ WSGI_APPLICATION = 'student_api.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 REST_FRAMEWORK={
-    'DEFAULT_PERMISSION_CLASSES':('rest_framework.permissions.IsAuthenticated',),
-	'DEFAULT_AUTHENTICATION_CLASSES':('rest_framework_simplejwt.authentication.JWTAuthentication',),
+    # 'DEFAULT_PERMISSION_CLASSES':('rest_framework.permissions.IsAuthenticated',),
+	# 'DEFAULT_AUTHENTICATION_CLASSES':('rest_framework_simplejwt.authentication.JWTAuthentication',),
     'DEFAULT_SCHEMA_CLASS': ('rest_framework.schemas.coreapi.AutoSchema'),
 
 }

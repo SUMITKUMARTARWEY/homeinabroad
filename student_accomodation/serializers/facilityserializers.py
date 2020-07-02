@@ -3,7 +3,7 @@ from student_accomodation.models import Facility
 from rest_framework import serializers
 from .stundent_manager import generate_slug
 class FacilitySerializer(serializers.ModelSerializer):
-	facility_slug=serializers.SerializerMethodField()
+	# facility_slug=serializers.SerializerMethodField()
 	# country_name=serializers.CharField(max_length=250,read_only=True)
 	added_by_name=serializers.CharField(max_length=250,read_only=True)
 	class Meta:
@@ -11,5 +11,5 @@ class FacilitySerializer(serializers.ModelSerializer):
 		fields = '__all__'
 		#exclude = ('status', )
 		model = Facility
-	def get_facility_slug(self,obj):
-		return generate_slug(obj.title)
+	# def get_facility_slug(self,obj):
+	# 	return generate_slug(obj.title)

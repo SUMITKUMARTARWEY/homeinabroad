@@ -4,7 +4,7 @@ from rest_framework import serializers
 from .stundent_manager import generate_slug
 
 class ProviderSerializer(serializers.ModelSerializer):
-	provider_slug=serializers.SerializerMethodField()
+	# provider_slug=serializers.SerializerMethodField()
 	added_by_name=serializers.CharField(max_length=400,read_only=True)
 	# country_name=serializers.CharField(max_length=400,read_only=True)
 	# city_name=serializers.CharField(max_length=400,read_only=True)
@@ -18,8 +18,11 @@ class ProviderSerializer(serializers.ModelSerializer):
 		#exclude = ('status', )
 		model = Provider
 
-	def get_provider_slug(self,obj):
-		return generate_slug(obj.name)
+	# def get_provider_slug(self,obj):
+	# 	try:
+	# 		return (obj.provider_slug)
+	# 	except:
+	# 		return None
 	def get_provider_city(self,obj):
 		try:
 			return [{"city_id":x.city.id,"city_name":x.city.name} for x in obj.provider_city.all()]

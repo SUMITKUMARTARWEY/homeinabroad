@@ -30,5 +30,10 @@ urlpatterns =[
 			url(r'^requestservice/show/(?P<pk>[0-9]+)$',requestservice.show.as_view(),name='countrycode_show'),
 			url(r'^contactus/list/$',contactus.list.as_view(),name='countrycode_list'),
 			url(r'^contactus/show/(?P<pk>[0-9]+)$',contactus.show.as_view(),name='countrycode_show'),
+			url(r'^universitycity/list/$',university.universitycity.as_view(),name='universitycity'),
+			url(r'^property/details/(?P<city__city_slug>[\w-]+)$',property_view.property_website_list.as_view(),name='universitycity'),
+			url(r'^property/details/(?P<country__country_slug>[\w-]+)$',property_view.property_website_list.as_view(),name='universitycity'),
+			url(r'^city/details/(?P<city_slug>[\w-]+)$',city.city_detail.as_view(),name="city_show"),
+			url(r'^search/$',property_view.search_detail.as_view(),name="city_show"),
 			]
 

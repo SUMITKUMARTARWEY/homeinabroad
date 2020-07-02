@@ -3,7 +3,7 @@ from student_accomodation.models import Country
 from rest_framework import serializers
 from .stundent_manager import generate_slug
 class CountrySerializer(serializers.ModelSerializer):
-	country_slug=serializers.SerializerMethodField()
+	# country_slug=serializers.SerializerMethodField()
 	added_by_name=serializers.CharField(max_length=400,read_only=True)
 	currnecy_name=serializers.CharField(max_length=400,read_only=True)
 	# city_name=serializers.CharField(max_length=150,write_only=True)
@@ -15,8 +15,8 @@ class CountrySerializer(serializers.ModelSerializer):
 		#exclude = ('status', );;
 		model = Country
 
-	def get_country_slug(self,obj):
-		return generate_slug(obj.name)
+	# def get_country_slug(self,obj):
+	# 	return generate_slug(obj.name)
 
 
 	# def create(self,validated_data):
